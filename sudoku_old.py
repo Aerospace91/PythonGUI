@@ -10,6 +10,7 @@ class SudokuError(Exception):
     """
     An application specific error
     """
+
     pass
 
 class SudokuBoard(object):
@@ -42,7 +43,7 @@ class SudokuBoard(object):
 
 class SudokuGame(object):
     """
-    A sudoku game, in charge of storing the state of the board and checking whether the puzzle is completed
+    A sudoku game, in charge of storing the state of the baord and checking whether the puzzle is completed
     """
 
     def __init__(self, board_file):
@@ -93,7 +94,7 @@ class SudokuGame(object):
 
 class SudokuUI(Frame):
     """
-    The Tkinter UI, responsible for drawing the board and accepting Input
+    The Tkinter UI, response for drawing the board and accepting Input
     """
 
     def __init__(self, parent, game):
@@ -115,7 +116,6 @@ class SudokuUI(Frame):
         clear_button = Button(self,
                             text="Clear answers",
                             command=self.__clear_answers)
-        clear_button.pack(side=BOTTOM)
         self.__draw_grid()
         self.__draw_puzzle()
 
@@ -145,7 +145,7 @@ class SudokuUI(Frame):
                 answer = self.game.puzzle[i][j]
                 if answer != 0:
                     x = MARGIN + j * SIDE + SIDE / 2
-                    y = MARGIN + i * SIDE + SIDE / 2
+                    y = MARGIN + i * SIDE * SIDE / 2
                     original = self.game.start_puzzle[i][j]
                     color = "black" if answer == original else "sea green"
                     self.canvas.create_text(
@@ -165,12 +165,12 @@ class SudokuUI(Frame):
         if (MARGIN < x < WIDTH - MARGIN and MARGIN < y < HEIGHT - MARGIN):
             self.canvas.focus_set()
 
-            row, col = (y - MARGIN) // SIDE, (x - MARGIN) // SIDE
+            row, col = (y - MARGIN) / SIDE, (x - MARGIN) / SIDE
 
             if (row, col) == (self.row, self.col):
                 self.row, self.col = -1, -1
             elif self.game.puzzle[row][col] == 0:
-                self.row, self.col = row, col
+                self.row. self.col = row, col
 
         self.__draw_cursor()
 
@@ -185,7 +185,6 @@ class SudokuUI(Frame):
                 x0, y0, x1, y1,
                 outline="red", tags="cursor"
             )
-
     def __key_pressed(self, event):
         if self.game.game_over:
             return
@@ -204,11 +203,11 @@ class SudokuUI(Frame):
             x0, y0, x1, y1,
             tags="victory", fill="dark orange", outline="orange"
         )
-        # Create Text
+        #Create Text
         x = y = MARGIN + 4 * SIDE + SIDE / 2
         self.canvas.create_text(
             x, y,
-            text="You Win!", tags="victory",
+            text="You Win!", tags="winner",
             fill="white", font=("Arial", 32)
         )
 
@@ -216,7 +215,7 @@ def parse_arguments():
     """
     Parses arguments of the form:
         sudoku.py <board name>
-    Where `board name` must be in the `BOARDS` list
+    Where `board name` must be in the `BOARD` list
     """
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument("--board",
